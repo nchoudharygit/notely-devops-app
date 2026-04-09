@@ -1,0 +1,9 @@
+node_modules/
+vendor/
+.git/
+Dockerfile*
+.dockerignore
+*.log*
+.env*
+coverage/
+specs/

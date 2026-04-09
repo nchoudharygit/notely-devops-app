@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --border: #e8e8e4;
+  --text: #1a1a1a;
+  --text-muted: #888880;
+  --accent: #2d6a4f;
+  --accent-hover: #235c43;
+  --accent-light: #e8f4ef;
+  --danger: #c0392b;
+  --danger-hover: #a93226;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --radius: 8px;
+  --radius-sm: 5px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+nav::before {
+  content: '📝';
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+nav button {
+  padding: 6px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+nav button:hover { background: var(--bg); color: var(--text); }
+
+#nav-logout {
+  margin-left: auto;
+  color: var(--danger) !important;
+}
+#nav-logout:hover { background: #fdf0ee !important; }
+
+/* ── MAIN ── */
+main { padding: 32px 24px; max-width: 860px; margin: 0 auto; }
+
+/* ── AUTH CARD ── */
+.card {
+  max-width: 400px;
+  margin: 80px auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  display: grid;
+  gap: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+.card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+/* ── INPUTS ── */
+input, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+}
+
+input::placeholder, textarea::placeholder { color: var(--text-muted); }
+
+textarea { resize: vertical; min-height: 80px; }
+
+/* ── BUTTONS ── */
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* Primary */
+button[id*="submit"],
+button[id*="create"],
+button[id*="login"],
+button[id*="register"],
+button[id*="save"] {
+  background: var(--accent);
+  color: white;
+  width: 100%;
+}
+button[id*="submit"]:hover,
+button[id*="create"]:hover,
+button[id*="login"]:hover,
+button[id*="register"]:hover,
+button[id*="save"]:hover {
+  background: var(--accent-hover);
+}
+
+/* ── NOTE FORM ── */
+.note-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+}
+
+.note-form h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+/* ── NOTE LIST ── */
+.note-list { display: grid; gap: 12px; }
+
+.note-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.note-item:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #d0d0c8;
+}
+
+.note-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.note-body {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.note-actions button {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-open {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid transparent;
+}
+.btn-open:hover { background: #d4ecdf; }
+
+.btn-delete {
+  background: #fdf0ee;
+  color: var(--danger);
+  border: 1px solid transparent;
+}
+.btn-delete:hover { background: #faddda; }
+
+/* ── TAGS ── */
+.tag-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 2px;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+.empty-state p { font-size: 15px; margin-top: 8px; }
+
+/* ── ERROR ── */
+.error-msg {
+  color: var(--danger);
+  font-size: 13px;
+  padding: 10px 14px;
+  background: #fdf0ee;
+  border-radius: var(--radius-sm);
+  border: 1px solid #f5c6c2;
+}
+
+/* ── HIDDEN ── */
+.hidden { display: none !important; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Auth buttons */
+.card button {
+  width: 100%;
+  background: var(--accent);
+  color: white;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+}
+.card button:hover { background: var(--accent-hover); }
+
+/* Auth heading */
+.card h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+/* Auth divider between login/register */
+.card form + form {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+/* Message */
+.card #message {
+  font-size: 13px;
+  color: var(--accent);
+  text-align: center;
+}
