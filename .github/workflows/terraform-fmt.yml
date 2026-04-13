@@ -26,4 +26,22 @@ jobs:
                 ls -R terraform
                 echo "------"
                 cat terraform/main.tf
+    
+    validate:
+        runs-on: ubuntu-latest
+        needs: terraform-fmt
+        steps:
+        - name: Check out code
+          uses: actions/checkout@v2 
+        
+        - name: Set up Terraform
+          uses: hashicorp/setup-terraform@v3
+          with:
+                terraform_version: 1.7
+
+        - name: terraform init (no backend)
+          run: terraform -chdir=terraform/environments/dev init -backend=false
+            
+        - name: terraform validate
+          run: terraform -chdir=terraform/environments/dev validate
         
