@@ -18,8 +18,6 @@ jobs:
                 terraform_version: 1.7
 
         - name: Check Terraform formatting
-          run: terraform fmt -check
+          run: terraform fmt -check -recursive terraform/
 
-        - name: Force failure check
-          run: |
-             terraform fmt -check -recursive terraform/ || exit 1
+        
