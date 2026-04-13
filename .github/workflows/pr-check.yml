@@ -7,11 +7,12 @@ jobs:
     pr-check:
         runs-on: ubuntu-latest
         steps:
-        - name: Check out code  
+        - name: Check out code  # The actions/checkout@v4 step is important — without it, the workflow cannot see your code.
           uses: actions/checkout@v2  # Check out the code from the PR if we don't do this, we won't have access to the code to run tests or linting
         
         - name: Show PR details
-          run: echo "PR #${{ github.event.pull_request.number }} by ${{ github.event.pull_request.user.login }}"
+          run: | 
+            echo "PR #${{ github.event.pull_request.number }} by ${{ github.event.pull_request.user.login }}"
 
         - name: List files in repository
           run: ls -la
