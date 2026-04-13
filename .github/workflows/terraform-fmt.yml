@@ -26,5 +26,4 @@ jobs:
                 ls -R terraform
                 echo "------"
                 cat terraform/main.tf
-        - name: Force fail test
-          run: exit 1
+        
