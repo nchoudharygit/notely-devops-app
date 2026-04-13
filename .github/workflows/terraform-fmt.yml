@@ -40,8 +40,8 @@ jobs:
                 terraform_version: 1.7
 
         - name: terraform init (no backend)
-          run: terraform -chdir=terraform/environments/dev init -backend=false
+          run: terraform -chdir=terraform init -backend=false
             
         - name: terraform validate
-          run: terraform -chdir=terraform/environments/dev validate
+          run: terraform -chdir=terraform/ validate
         
