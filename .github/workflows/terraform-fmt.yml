@@ -19,3 +19,7 @@ jobs:
 
         - name: Check Terraform formatting
           run: terraform fmt -check
+
+        - name: Force failure check
+          run: |
+             terraform fmt -check -recursive terraform/ || exit 1
