@@ -1,4 +1,5 @@
-resource "aws_instance" "example" { ami="ami-123456" instance_type="t2.micro"
+resource "aws_security_group" "sg" {
+  name = "test"
 
-tags={Name="Test"}
+  ingress { from_port = 80 to_port = 80 protocol = "tcp" cidr_blocks = ["0.0.0.0/0"] }
 }
