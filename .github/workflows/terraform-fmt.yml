@@ -1,0 +1,21 @@
+name: Terraform Format Check
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - 'terraform/**'  # Only trigger this workflow for changes in the terraform directory
+jobs:
+    terraform-fmt:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Check out code
+          uses: actions/checkout@v2 
+        
+        - name: Set up Terraform
+          uses: hashicorp/setup-terraform@v3
+          with:
+                terraform_version: 1.7
+
+        - name: Check Terraform formatting
+          run: terraform fmt -check
