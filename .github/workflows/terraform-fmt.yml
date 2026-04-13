@@ -20,4 +20,9 @@ jobs:
         - name: Check Terraform formatting
           run: terraform fmt -check -recursive terraform/
 
-        
+        - name: Debug terraform files
+          run: |
+                echo "Files:"
+                ls -R terraform
+                echo "------"
+                cat terraform/main.tf
