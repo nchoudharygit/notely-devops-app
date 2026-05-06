@@ -1,10 +1,12 @@
-resource "aws_security_group" "sg" {
-  name = "test"
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
+}
+ 
+provider "aws" {
+  region = var.aws_region
 }
