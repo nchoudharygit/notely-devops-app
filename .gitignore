@@ -21,3 +21,5 @@ terraform.tfstate.backup
 *.tfvars.tfvars.json
 *.tfvars.tfvars.yaml
 *.tfvars.tfvars.yml     
+# Terraform backend config (contains account-specific values)
+terraform/backend.tf
