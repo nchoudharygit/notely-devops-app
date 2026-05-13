@@ -28,15 +28,22 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push PHP image
+        env:
+          # Use the registry URL directly from the login step output
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t ${{ secrets.ECR_REGISTRY }}/notely-app:${{ github.sha }} ./app/backend
-          docker push ${{ secrets.ECR_REGISTRY }}/notely-app:${{ github.sha }}
+          docker build -t $ECR_REGISTRY/notely-app:$IMAGE_TAG ./app/backend
+          docker push $ECR_REGISTRY/notely-app:$IMAGE_TAG
 
       - name: Build and push Nginx image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t ${{ secrets.ECR_REGISTRY }}/notely-nginx:${{ github.sha }} ./app/nginx
-          docker push ${{ secrets.ECR_REGISTRY }}/notely-nginx:${{ github.sha }}
-
+          docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
+          docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
+          
       - uses: hashicorp/setup-terraform@v3
         with: { terraform_version: "1.6.0" }
 
