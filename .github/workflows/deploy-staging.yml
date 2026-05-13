@@ -44,8 +44,10 @@ jobs:
           docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
           docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
           
-      - uses: hashicorp/setup-terraform@v3
-        with: { terraform_version: "1.6.0" }
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
 
       - name: Terraform deploy
         working-directory: terraform
