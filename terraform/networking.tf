@@ -2,16 +2,16 @@ resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
-  tags = { Name = "notely-vpc-${var.environment}" }
+  tags                 = { Name = "notely-vpc-${var.environment}" }
 }
 # Public Subnets - ALB lives here (2 AZs required for ALB)
 resource "aws_subnet" "public" {
-  count             = 2
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.${count.index + 1}.0/24"
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  count                   = 2
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.${count.index + 1}.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
-  tags = { Name = "notely-public-${count.index + 1}" }
+  tags                    = { Name = "notely-public-${count.index + 1}" }
 }
 # Private Subnets - ECS tasks and RDS live here (more secure)
 resource "aws_subnet" "private" {
@@ -19,7 +19,7 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.${count.index + 10}.0/24"
   availability_zone = data.aws_availability_zones.available.names[count.index]
-  tags = { Name = "notely-private-${count.index + 1}" }
+  tags              = { Name = "notely-private-${count.index + 1}" }
 }
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
@@ -27,10 +27,10 @@ resource "aws_internet_gateway" "main" {
 }
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
-  route { 
+  route {
     cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.main.id
-   }
+    gateway_id = aws_internet_gateway.main.id
+  }
 }
 resource "aws_route_table_association" "public" {
   count          = 2

@@ -9,6 +9,6 @@ resource "aws_ecr_lifecycle_policy" "notely" {
   repository = aws_ecr_repository.notely.name
   policy = jsonencode({ rules = [{ rulePriority = 1, description = "Keep last 10 images",
     selection = { tagStatus = "any", countType = "imageCountMoreThan", countNumber = 10 },
-    action = { type = "expire" } }] })
+  action = { type = "expire" } }] })
 }
 output "ecr_url" { value = aws_ecr_repository.notely.repository_url }

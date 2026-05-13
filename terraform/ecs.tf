@@ -3,12 +3,12 @@ resource "aws_ecs_cluster" "main" {
 }
 
 resource "aws_launch_template" "ecs" {
-  name_prefix            = "notely-ecs-"
-  image_id               = data.aws_ami.ecs_ami.id
-  instance_type          = "t3.micro"
-  iam_instance_profile   { arn = aws_iam_instance_profile.ecs_node.arn }
+  name_prefix   = "notely-ecs-"
+  image_id      = data.aws_ami.ecs_ami.id
+  instance_type = "t3.micro"
+  iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   vpc_security_group_ids = [aws_security_group.ecs.id]
-  user_data = base64encode("#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config")
+  user_data              = base64encode("#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config")
 }
 
 resource "aws_autoscaling_group" "ecs" {
@@ -28,11 +28,11 @@ resource "aws_ecs_task_definition" "notely" {
   execution_role_arn = aws_iam_role.ecs_execution.arn
   container_definitions = jsonencode([
     {
-      name  = "nginx"
-      image = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-nginx:latest"
+      name         = "nginx"
+      image        = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-nginx:latest"
       portMappings = [{ containerPort = 80, hostPort = 0 }]
-      essential = true
-      dependsOn = [{ containerName = "php", condition = "START" }]
+      essential    = true
+      dependsOn    = [{ containerName = "php", condition = "START" }]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -45,16 +45,16 @@ resource "aws_ecs_task_definition" "notely" {
       cpu    = 64
     },
     {
-      name  = "php"
-      image = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-app:latest"
-      essential = true
+      name         = "php"
+      image        = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-app:latest"
+      essential    = true
       portMappings = []
       environment = [
-        { name = "DB_HOST",     value = aws_db_instance.postgres.address },
-        { name = "DB_NAME",     value = "notely" },
-        { name = "DB_USER",     value = "notely_user" },
+        { name = "DB_HOST", value = aws_db_instance.postgres.address },
+        { name = "DB_NAME", value = "notely" },
+        { name = "DB_USER", value = "notely_user" },
         { name = "DB_PASSWORD", value = local.db_password },
-        { name = "APP_ENV",     value = var.environment }
+        { name = "APP_ENV", value = var.environment }
       ]
       logConfiguration = {
         logDriver = "awslogs"
@@ -82,7 +82,7 @@ resource "aws_ecs_service" "notely" {
   }
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
-  depends_on = [aws_lb_listener.http]
+  depends_on                         = [aws_lb_listener.http]
 }
 
 data "aws_ami" "ecs_ami" {

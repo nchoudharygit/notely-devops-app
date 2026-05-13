@@ -17,7 +17,7 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${var.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
   route_table_ids   = [aws_route_table.public.id]
-  tags = { Name = "notely-s3-endpoint" }
+  tags              = { Name = "notely-s3-endpoint" }
 }
 
 # ECR API Endpoint - ECS pulls image metadata through this
@@ -28,7 +28,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "notely-ecr-api-endpoint" }
+  tags                = { Name = "notely-ecr-api-endpoint" }
 }
 
 # ECR Docker Endpoint - ECS pulls actual image layers through this
@@ -39,7 +39,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "notely-ecr-dkr-endpoint" }
+  tags                = { Name = "notely-ecr-dkr-endpoint" }
 }
 
 # Secrets Manager Endpoint - app fetches DB password securely
@@ -50,7 +50,7 @@ resource "aws_vpc_endpoint" "secrets_manager" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "notely-secrets-endpoint" }
+  tags                = { Name = "notely-secrets-endpoint" }
 }
 
 # CloudWatch Logs Endpoint - ECS sends logs through this
@@ -61,5 +61,5 @@ resource "aws_vpc_endpoint" "cloudwatch_logs" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "notely-logs-endpoint" }
+  tags                = { Name = "notely-logs-endpoint" }
 }
