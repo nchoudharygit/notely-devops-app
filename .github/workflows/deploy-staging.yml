@@ -1,0 +1,46 @@
+name: Deploy to Staging
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push PHP image
+        run: |
+          docker build -t ${{ secrets.ECR_REGISTRY }}/notely-app:${{ github.sha }} ./app/backend
+          docker push ${{ secrets.ECR_REGISTRY }}/notely-app:${{ github.sha }}
+
+      - name: Build and push Nginx image
+        run: |
+          docker build -t ${{ secrets.ECR_REGISTRY }}/notely-nginx:${{ github.sha }} ./app/nginx
+          docker push ${{ secrets.ECR_REGISTRY }}/notely-nginx:${{ github.sha }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: "1.6.0" }
+
+      - name: Terraform deploy
+        working-directory: terraform
+        env:
+          TF_VAR_environment: staging
+          TF_VAR_app_image_tag: ${{ github.sha }}
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Health check
+        run: |
+          sleep 30
+          APP_URL=$(cd terraform && terraform output -raw app_url)
+          curl --fail $APP_URL/health || exit 1
+          echo "Staging deploy successful!"

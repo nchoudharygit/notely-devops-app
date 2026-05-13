@@ -21,8 +21,7 @@ aws s3api put-bucket-versioning \
 aws s3api put-public-access-block \
   --bucket $BUCKET_NAME \
   --public-access-block-configuration \
-    BlockPublicAcls=true,IgnorePublicAcls=true,\
-    BlockPublicPolicy=true,RestrictPublicBuckets=true
+    BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
 
 aws dynamodb create-table \
   --table-name notely-terraform-locks \

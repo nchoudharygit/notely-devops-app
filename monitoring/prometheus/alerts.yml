@@ -1,0 +1,18 @@
+groups:
+  - name: notely-alerts
+    rules:
+      - alert: AppDown
+        expr: up{job='notely-app'} == 0
+        for: 30s
+        labels: { severity: critical }
+        annotations: { summary: 'Notely app is DOWN!' }
+      - alert: HighCPU
+        expr: rate(process_cpu_seconds_total[5m]) * 100 > 80
+        for: 2m
+        labels: { severity: warning }
+        annotations: { summary: 'CPU > 80% for 2 minutes' }
+      - alert: HighMemory
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 2m
+        labels: { severity: warning }
+        annotations: { summary: 'Memory > 85% for 2 minutes' }
