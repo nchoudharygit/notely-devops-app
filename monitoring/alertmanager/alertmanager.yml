@@ -1,0 +1,17 @@
+global:
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: 'slack'
+receivers:
+  - name: 'slack'
+    slack_configs:
+      - channel: '#devops-alerts'
+        title: ':fire: {{ .GroupLabels.alertname }}'
+        text: |
+          *Alert:* {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}
+          *Severity:* {{ .GroupLabels.severity }}
+        send_resolved: true

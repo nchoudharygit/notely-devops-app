@@ -1,7 +1,7 @@
 variable "environment" {
     description = "The environment to deploy to"
     type        = string
-    default     = "dev"
+    default     = "staging"
 }
 
 variable "aws_region" {
@@ -20,4 +20,10 @@ variable "app_image_tag" {
     description = "The tag for the application image"
     type        = string
     default     = "latest"
+}
+
+variable "grafana_password" {
+    description = "The password for Grafana"
+    type        = string
+    sensitive   = true
 }
