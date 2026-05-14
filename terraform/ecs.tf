@@ -83,6 +83,7 @@ resource "aws_ecs_service" "notely" {
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
   depends_on                         = [aws_lb_listener.http]
+  health_check_grace_period_seconds = 300
 }
 
 data "aws_ami" "ecs_ami" {

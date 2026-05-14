@@ -64,3 +64,12 @@ resource "aws_security_group" "rds" {
     security_groups = [aws_security_group.ecs.id]
   }
 }
+
+resource "aws_security_group_rule" "ecs_self_ingress" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1" # All protocols
+  security_group_id = aws_security_group.ecs.id
+  self              = true
+}
