@@ -14,12 +14,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      
+    # Setup Terraform and deploy infrastructure  
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.0
-
+# Fetch secrets from AWS Secrets Manager and set them as GitHub Actions outputs
       - name: Fetch Secrets from AWS
         id: aws_secrets
         run: |
@@ -31,7 +31,7 @@ jobs:
           GRAFANA_PWD=$(aws secretsmanager get-secret-value --secret-id notely/staging/grafana-password --query SecretString --output text)
           echo "::add-mask::$GRAFANA_PWD"
           echo "grafana_pwd=$GRAFANA_PWD" >> $GITHUB_OUTPUT
-
+# Deploy infrastructure using Terraform
       - name: Terraform deploy
         working-directory: terraform
         env:
@@ -44,7 +44,7 @@ jobs:
           terraform apply -auto-approve
 
      
-
+# Build and push Docker images to Amazon ECR
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -65,13 +65,14 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
           docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
-          
+  # Perform health check on the deployed application        
       - name: Health check
         run: |
           sleep 30
           APP_URL=$(cd terraform && terraform output -raw app_url)
           curl --fail $APP_URL/health || exit 1
           echo "Staging deploy successful!"
+
 
           
 
