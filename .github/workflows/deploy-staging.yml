@@ -32,7 +32,40 @@ jobs:
           echo "::add-mask::$GRAFANA_PWD"
           echo "grafana_pwd=$GRAFANA_PWD" >> $GITHUB_OUTPUT
 
-      - name: Terraform Deploy
+      - name: Terraform Init
+        working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=notely-terraform-state-162185499985" \
+            -backend-config="key=staging/terraform.tfstate" \
+            -backend-config="region=ap-south-1" \
+            -backend-config="dynamodb_table=notely-terraform-locks" \
+            -backend-config="encrypt=true"
+
+      # PHASE 1: Create ECR Repos only so we have a place to push images
+      - name: Terraform Create ECR
+        working-directory: terraform
+        run: |
+          terraform apply -target=aws_ecr_repository.notely_app -target=aws_ecr_repository.notely_nginx -auto-approve
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+          
+      # PHASE 2: Build and Push Images (Now the repos are guaranteed to exist)
+      - name: Build and Push Images
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/notely-app:$IMAGE_TAG ./app/backend
+          docker push $ECR_REGISTRY/notely-app:$IMAGE_TAG
+          
+          docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
+          docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
+
+      # PHASE 3: Full Deploy (ECS will now find the images already waiting in ECR)
+      - name: Terraform Full Deploy
         working-directory: terraform
         env:
           TF_VAR_environment: staging
@@ -40,36 +73,12 @@ jobs:
           TF_VAR_db_password: ${{ steps.aws_secrets.outputs.db_pwd }}
           TF_VAR_grafana_password: ${{ steps.aws_secrets.outputs.grafana_pwd }}
         run: |
-          # The -backend-config flags connect your runner to the S3 bucket you created
-          terraform init \
-            -backend-config="bucket=notely-terraform-state-162185499985" \
-            -backend-config="key=staging/terraform.tfstate" \
-            -backend-config="region=ap-south-1" \
-            -backend-config="dynamodb_table=notely-terraform-locks" \
-            -backend-config="encrypt=true"
-          
           terraform apply -auto-approve
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and Push Images
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          # Build and Push Backend
-          docker build -t $ECR_REGISTRY/notely-app:$IMAGE_TAG ./app/backend
-          docker push $ECR_REGISTRY/notely-app:$IMAGE_TAG
-          
-          # Build and Push Nginx
-          docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
-          docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
 
       - name: Health Check
         run: |
           echo "Waiting for services to stabilize..."
+          # Increased sleep to allow the ECS agent to register with the Target Group
           sleep 120
           APP_URL=$(cd terraform && terraform output -raw app_url)
           curl --fail $APP_URL/health || exit 1

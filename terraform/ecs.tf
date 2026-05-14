@@ -29,7 +29,7 @@ resource "aws_ecs_task_definition" "notely" {
   container_definitions = jsonencode([
     {
       name         = "nginx"
-      image        = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-nginx:latest"
+      image = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-nginx:${var.app_image_tag}"
       portMappings = [{ containerPort = 80, hostPort = 0 }]
       essential    = true
       dependsOn    = [{ containerName = "php", condition = "START" }]
@@ -46,7 +46,7 @@ resource "aws_ecs_task_definition" "notely" {
     },
     {
       name         = "php"
-      image        = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-app:latest"
+      image        = "162185499985.dkr.ecr.ap-south-1.amazonaws.com/notely-app:${var.app_image_tag}"
       essential    = true
       portMappings = []
       environment = [
