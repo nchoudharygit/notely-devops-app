@@ -84,11 +84,19 @@ jobs:
           TF_VAR_grafana_password: ${{ steps.aws_secrets.outputs.grafana_pwd }}
         run: |
           terraform apply -auto-approve
+  
+  # ✅ Always release lock even if apply fails
+      - name: Terraform Unlock on Failure
+        if: failure()
+        working-directory: terraform
+        run: |
+          LOCK_ID=$(terraform force-unlock -force 2>&1 | grep 'ID:' | awk '{print $2}')
+          echo "Released lock: $LOCK_ID"
 
       - name: Health Check
         run: |
-          echo "Waiting for services to stabilize..."
-          sleep 120
-          APP_URL=$(cd terraform && terraform output -raw app_url)
-          curl --fail $APP_URL/health || exit 1
-          echo "Staging deploy successful!"
+              echo "Waiting for services to stabilize..."
+              sleep 120
+              APP_URL=$(cd terraform && terraform output -raw app_url)
+              curl --fail $APP_URL/health || exit 1
+              echo "Staging deploy successful!"
