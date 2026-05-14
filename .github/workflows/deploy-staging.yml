@@ -15,30 +15,6 @@ jobs:
           aws-region: ap-south-1
 
       
-      
-      
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and push PHP image
-        env:
-          # Use the registry URL directly from the login step output
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/notely-app:$IMAGE_TAG ./app/backend
-          docker push $ECR_REGISTRY/notely-app:$IMAGE_TAG
-
-      - name: Build and push Nginx image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
-          docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
-          
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -67,9 +43,36 @@ jobs:
           terraform init
           terraform apply -auto-approve
 
+     
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push PHP image
+        env:
+          # Use the registry URL directly from the login step output
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/notely-app:$IMAGE_TAG ./app/backend
+          docker push $ECR_REGISTRY/notely-app:$IMAGE_TAG
+
+      - name: Build and push Nginx image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
+          docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
+          
       - name: Health check
         run: |
           sleep 30
           APP_URL=$(cd terraform && terraform output -raw app_url)
           curl --fail $APP_URL/health || exit 1
           echo "Staging deploy successful!"
+
+          
+
+      
