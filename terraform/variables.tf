@@ -17,9 +17,8 @@ variable "db_password" {
 }
 
 variable "app_image_tag" {
-  description = "The tag for the application image"
   type        = string
-  default     = "latest"
+  description = "The specific GitHub Commit SHA tag for the images"
 }
 
 variable "grafana_password" {
