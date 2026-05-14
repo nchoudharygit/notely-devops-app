@@ -52,13 +52,12 @@ jobs:
       - name: Fetch Secrets from AWS
         id: aws_secrets
         run: |
-          # Fetch DB Password
-          DB_PWD=$(aws secretsmanager get-secret-value --secret-id notely-db-password --query SecretString --output text)
+          # Use the exact secret names from your console
+          DB_PWD=$(aws secretsmanager get-secret-value --secret-id notely/staging/db-password --query SecretString --output text)
           echo "::add-mask::$DB_PWD"
           echo "db_pwd=$DB_PWD" >> $GITHUB_OUTPUT
 
-          # Fetch Grafana Password
-          GRAFANA_PWD=$(aws secretsmanager get-secret-value --secret-id notely-grafana-password --query SecretString --output text)
+          GRAFANA_PWD=$(aws secretsmanager get-secret-value --secret-id notely/staging/grafana-password --query SecretString --output text)
           echo "::add-mask::$GRAFANA_PWD"
           echo "grafana_pwd=$GRAFANA_PWD" >> $GITHUB_OUTPUT
 
