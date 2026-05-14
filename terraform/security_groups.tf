@@ -73,3 +73,4 @@ resource "aws_security_group_rule" "ecs_self_ingress" {
   security_group_id = aws_security_group.ecs.id
   self              = true
 }
+

@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "notely" {
           awslogs-stream-prefix = "nginx"
         }
       }
-      memory = 128
+      memory = 64
       cpu    = 64
     },
     {
@@ -64,8 +64,8 @@ resource "aws_ecs_task_definition" "notely" {
           awslogs-stream-prefix = "php"
         }
       }
-      memory = 400
-      cpu    = 256
+      memory = 256
+      cpu    = 128
     }
   ])
 }
