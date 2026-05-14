@@ -80,8 +80,8 @@ resource "aws_ecs_service" "notely" {
     container_name   = "nginx"
     container_port   = 80
   }
-  deployment_minimum_healthy_percent = 50
-  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 0
+  deployment_maximum_percent         = 100
   depends_on                         = [aws_lb_listener.http]
   health_check_grace_period_seconds = 300
 }

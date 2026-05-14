@@ -1,0 +1,192 @@
+{
+    "service": {
+        "serviceArn": "arn:aws:ecs:ap-south-1:162185499985:service/notely-cluster-staging/notely-service-staging",
+        "serviceName": "notely-service-staging",
+        "clusterArn": "arn:aws:ecs:ap-south-1:162185499985:cluster/notely-cluster-staging",
+        "loadBalancers": [
+            {
+                "targetGroupArn": "arn:aws:elasticloadbalancing:ap-south-1:162185499985:targetgroup/notely-tg-staging/4c55fbb6a1d69076",
+                "containerName": "nginx",
+                "containerPort": 80
+            }
+        ],
+        "serviceRegistries": [],
+        "status": "ACTIVE",
+        "desiredCount": 1,
+        "runningCount": 0,
+        "pendingCount": 0,
+        "launchType": "EC2",
+        "taskDefinition": "arn:aws:ecs:ap-south-1:162185499985:task-definition/notely-staging:7",
+        "deploymentConfiguration": {
+            "deploymentCircuitBreaker": {
+                "enable": false,
+                "rollback": false
+            },
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 50,
+            "strategy": "ROLLING",
+            "bakeTimeInMinutes": 0
+        },
+        "deployments": [
+            {
+                "id": "ecs-svc/7548828832890637404",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:ap-south-1:162185499985:task-definition/notely-staging:7",
+                "desiredCount": 0,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "failedTasks": 0,
+                "createdAt": "2026-05-14T20:40:40.498000+05:30",
+                "updatedAt": "2026-05-14T20:40:40.498000+05:30",
+                "launchType": "EC2",
+                "rolloutState": "IN_PROGRESS",
+                "rolloutStateReason": "ECS deployment ecs-svc/7548828832890637404 in progress."
+            },
+            {
+                "id": "ecs-svc/0558452315937311128",
+                "status": "ACTIVE",
+                "taskDefinition": "arn:aws:ecs:ap-south-1:162185499985:task-definition/notely-staging:7",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "failedTasks": 9,
+                "createdAt": "2026-05-14T20:07:16.434000+05:30",
+                "updatedAt": "2026-05-14T20:18:10.395000+05:30",
+                "launchType": "EC2",
+                "rolloutState": "IN_PROGRESS",
+                "rolloutStateReason": "ECS deployment ecs-svc/0558452315937311128 in progress."
+            }
+        ],
+        "roleArn": "arn:aws:iam::162185499985:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "events": [
+            {
+                "id": "d424f55d-5c29-442f-ba6d-69577945fcce",
+                "createdAt": "2026-05-14T20:35:36.051000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "0f5349aa-3a9a-4861-bc39-6c459bd4c708",
+                "createdAt": "2026-05-14T20:35:26.094000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task 6d26dd86077b4b0f8742c2fb788caa36)."
+            },
+            {
+                "id": "9464379f-39a7-4e41-b9e4-2a0dd301b6a1",
+                "createdAt": "2026-05-14T20:34:15.246000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task fc53c0c3d4d94ed0b9833bacf2f4763c)."
+            },
+            {
+                "id": "24c7a32b-24d9-49ff-bb74-b9043e0f5ec8",
+                "createdAt": "2026-05-14T20:29:00.752000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "ba004f27-2eb8-4550-86d2-1f5ebd16366d",
+                "createdAt": "2026-05-14T20:27:49.130000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task 8fae292b34fc4bac8418a7aa75387448)."
+            },
+            {
+                "id": "0fd5defe-07e4-49e7-8348-68e89ceb84f9",
+                "createdAt": "2026-05-14T20:22:54.550000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "8b97c159-bb1c-4099-81f8-b20747155ff8",
+                "createdAt": "2026-05-14T20:21:44.365000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task 3b526a7d68c7463781d8e873a4d2d008)."
+            },
+            {
+                "id": "39f92fb4-652b-4cf3-8c3f-4f3e66518b78",
+                "createdAt": "2026-05-14T20:21:15.072000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "f357efbb-806e-4194-9338-5b59c0125204",
+                "createdAt": "2026-05-14T20:20:04.340000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task 3945bd3aec734aa5b604782c374f15fa)."
+            },
+            {
+                "id": "987860be-cce9-422e-b299-ab8e06b2eb39",
+                "createdAt": "2026-05-14T20:19:34.516000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "790ff90c-8aae-47c4-b04a-44264bb62012",
+                "createdAt": "2026-05-14T20:18:18.501000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task d17248d2acf04d3ebb7c3e5646d34b64)."
+            },
+            {
+                "id": "fde59071-8c93-42e4-ac2e-f41c7d29e4d2",
+                "createdAt": "2026-05-14T20:17:53.500000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "155edaf2-118c-451f-b94c-6950715e687e",
+                "createdAt": "2026-05-14T20:16:42.817000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task 9d1c419dcc2248b59f17bb0c9dc26432)."
+            },
+            {
+                "id": "57b1056d-426e-4318-9a67-7b57ed0a7f12",
+                "createdAt": "2026-05-14T20:11:48.782000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "37423c9d-e149-4302-afea-c9ef5394cd3f",
+                "createdAt": "2026-05-14T20:10:38.626000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task 3763a13356a84aaaa2fc9b4a6594fe52)."
+            },
+            {
+                "id": "31042210-fddd-40d1-bc7f-3739d9b36d06",
+                "createdAt": "2026-05-14T20:10:05.902000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "dfe41ae8-ecd3-40f1-a975-b05b0f1cbca0",
+                "createdAt": "2026-05-14T20:08:54.482000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task c49daad9306047e79659834dbd656219)."
+            },
+            {
+                "id": "85e28daf-55f0-45b4-8ece-c1cff5dc7c4a",
+                "createdAt": "2026-05-14T20:08:22.363000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task. Reason: Task failed to start."
+            },
+            {
+                "id": "0e523dfd-ba77-429b-bdf5-03e239b3d417",
+                "createdAt": "2026-05-14T20:07:30.995000+05:30",
+                "message": "(service notely-service-staging) has started 1 tasks: (task e5cb1d3de0564ca986da7ce05f2f6b7e)."
+            },
+            {
+                "id": "e3b785e2-9cf3-4f87-9c59-23d31b16f12a",
+                "createdAt": "2026-05-14T19:11:37.848000+05:30",
+                "message": "(service notely-service-staging) was unable to place a task because no container instance met all of its requirements. The closest matching (container-instance 69446c0565cc4164b063c447e0ab3ec0) has insufficient memory available. For more information, see the Troubleshooting section of the Amazon ECS Developer Guide."
+            }
+        ],
+        "createdAt": "2026-05-14T19:11:18.100000+05:30",
+        "currentServiceRevisions": [
+            {
+                "arn": "arn:aws:ecs:ap-south-1:162185499985:service-revision/notely-cluster-staging/notely-service-staging/7548828832890637404",
+                "requestedTaskCount": 0,
+                "runningTaskCount": 0,
+                "pendingTaskCount": 0
+            },
+            {
+                "arn": "arn:aws:ecs:ap-south-1:162185499985:service-revision/notely-cluster-staging/notely-service-staging/0558452315937311128",
+                "requestedTaskCount": 1,
+                "runningTaskCount": 0,
+                "pendingTaskCount": 0
+            }
+        ],
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "healthCheckGracePeriodSeconds": 300,
+        "schedulingStrategy": "REPLICA",
+        "deploymentController": {
+            "type": "ECS"
+        },
+        "createdBy": "arn:aws:iam::162185499985:user/iam-user-notely",
+        "enableECSManagedTags": false,
+        "propagateTags": "NONE",
+        "enableExecuteCommand": false,
+        "availabilityZoneRebalancing": "DISABLED",
+        "resourceManagementType": "CUSTOMER"
+    }
+}
