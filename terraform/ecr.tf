@@ -12,3 +12,6 @@ resource "aws_ecr_lifecycle_policy" "notely" {
   action = { type = "expire" } }] })
 }
 output "ecr_url" { value = aws_ecr_repository.notely.repository_url }
+
+# To authenticate Docker to ECR, use the following command:
+# aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com
