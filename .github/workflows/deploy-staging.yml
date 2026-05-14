@@ -70,7 +70,7 @@ jobs:
       - name: Health Check
         run: |
           echo "Waiting for services to stabilize..."
-          sleep 60
+          sleep 120
           APP_URL=$(cd terraform && terraform output -raw app_url)
           curl --fail $APP_URL/health || exit 1
           echo "Staging deploy successful!"
