@@ -43,7 +43,6 @@ jobs:
             -backend-config="bucket=notely-terraform-state-162185499985" \
             -backend-config="key=staging/terraform.tfstate" \
             -backend-config="region=ap-south-1" \
-            -backend-config="use_lockfile=true" \
             -backend-config="encrypt=true"
 
       # ✅ Shared env block to avoid repetition and ensure consistency
