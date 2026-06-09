@@ -45,3 +45,4 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/notely-nginx:$IMAGE_TAG ./app/nginx
           docker push $ECR_REGISTRY/notely-nginx:$IMAGE_TAG
+          
