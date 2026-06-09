@@ -45,8 +45,8 @@ jobs:
             -backend-config="region=ap-south-1" \
             -backend-config="encrypt=true"
 
-      # ✅ Shared env block to avoid repetition and ensure consistency
-      - name: Terraform Create ECR
+      # terraform import ecr repositories to avoid recreation and potential downtime
+      - name: Terraform Import ECR Repositories
         working-directory: terraform
         env:
           TF_VAR_environment: staging
@@ -54,10 +54,11 @@ jobs:
           TF_VAR_db_password: ${{ steps.aws_secrets.outputs.db_pwd }}
           TF_VAR_grafana_password: ${{ steps.aws_secrets.outputs.grafana_pwd }}
         run: |
-          terraform apply \
-            -target=aws_ecr_repository.notely \
-            -target=aws_ecr_repository.nginx \
-            -auto-approve
+          aws ecr describe-repositories --repository-names notely-app --region ap-south-1 && \
+            terraform import aws_ecr_repository.notely app || echo "notely-app repo not found, will be created"
+          aws ecr describe-repositories --repository-names notely-nginx --region ap-south-1 && \
+            terraform import aws_ecr_repository.nginx nginx || echo "notely-nginx repo not found, will be created"
+
 
       - name: Login to Amazon ECR
         id: login-ecr
