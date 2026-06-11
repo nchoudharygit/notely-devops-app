@@ -385,3 +385,14 @@ echo "✅ Issue 11 created"
 echo ""
 echo "🎉 All done! 11 issues + 20 labels created on $REPO"
 echo "👉 Check: https://github.com/$REPO/issues"
+
+
+##### Remove failed workflow runs (optional cleanup)
+# echo "🧹 Cleaning up failed workflow runs..."
+## gh run list --status failure --json databaseId --jq '.[].databaseId' | \
+# while read id; do
+ # echo "Deleting run $id"
+ # gh run delete "$id"
+#done
+# echo "✅ Failed workflow runs cleaned up!"
+
