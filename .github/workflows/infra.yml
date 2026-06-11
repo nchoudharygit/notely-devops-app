@@ -35,22 +35,44 @@ jobs:
         working-directory: ./terraform
         run: terraform init
 
+      - name: Fetch DB Password
+        id: secrets
+        run: |
+          DB_PWD=$(aws secretsmanager get-secret-value \
+            --secret-id notely/staging/db-password \
+            --query SecretString --output text)
+          echo "::add-mask::$DB_PWD"
+          echo "db_pwd=$DB_PWD" >> $GITHUB_OUTPUT
+
+      - name: Fetch Grafana Password
+        id: secret-grafana
+        run: |
+          GRAFANA_PWD=$(aws secretsmanager get-secret-value \
+            --secret-id notely/staging/grafana-password \
+            --query SecretString --output text)
+          echo "::add-mask::$GRAFANA_PWD"
+          echo "grafana_pwd=$GRAFANA_PWD" >> $GITHUB_OUTPUT
+          
       - name: Plan Terraform changes
         working-directory: ./terraform
-        run: terraform plan
+        run: |
+          terraform plan \
+            -var='db_password=${{ steps.secrets.outputs.db_pwd }}' \
+            -var='grafana_password=${{ steps.secret-grafana.outputs.grafana_pwd }}'
+     
 
       - name: Apply or Destroy Terraform
         working-directory: ./terraform
         run: |
           if [ "${{ github.event.inputs.action }}" == "apply" ]; then
             terraform apply \
-            -var='db_password=${{ secrets.DB_PASSWORD }}' \
-            -var='grafana_password=${{ secrets.GRAFANA_PASSWORD }}' \
+            -var='db_password=${{ steps.secrets.outputs.db_pwd }}' \
+            -var='grafana_password=${{ steps.secret-grafana.outputs.grafana_pwd }}' \
             -auto-approve
           elif [ "${{ github.event.inputs.action }}" == "destroy" ]; then
             terraform destroy \
-            -var='db_password=${{ secrets.DB_PASSWORD }}' \
-            -var='grafana_password=${{ secrets.GRAFANA_PASSWORD }}' \
+            -var='db_password=${{ steps.secrets.outputs.db_pwd }}' \
+            -var='grafana_password=${{ steps.secret-grafana.outputs.grafana_pwd }}' \
             -auto-approve
           else
             echo "Invalid action. Please choose 'apply' or 'destroy'."
