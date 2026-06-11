@@ -48,7 +48,7 @@ jobs:
           IMAGE_TAG_LATEST: latest
         run: |
           # Build the Docker image
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA ./app/nginx
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA -f ./app/nginx/Dockerfile ./app/
 
           # Push the Docker image to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA
